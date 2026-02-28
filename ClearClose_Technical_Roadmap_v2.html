@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClearClose — Technical Roadmap v2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:wght@300;400;500;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface-2: #1a1a26;
+    --surface-3: #222233;
+    --border: rgba(255,255,255,0.06);
+    --border-glass: rgba(255,255,255,0.12);
+    --text: #e8e8f0;
+    --text-dim: #8888aa;
+    --text-muted: #555570;
+    --accent: #e8a030;
+    --accent-2: #d4782a;
+    --accent-3: #00d4aa;
+    --accent-glow: rgba(232,160,48,0.15);
+    --gradient-1: linear-gradient(135deg, #e8a030, #d4782a);
+    --gradient-2: linear-gradient(135deg, #00d4aa, #e8a030);
+    --gradient-3: linear-gradient(135deg, #ff6b8a, #d4782a);
+    --glass: rgba(255,255,255,0.06);
+    --glass-strong: rgba(255,255,255,0.1);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-lg: 24px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(ellipse, rgba(232,160,48,0.12) 0%, rgba(212,120,42,0.06) 40%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 100px;
+    background: rgba(232,160,48,0.1);
+    border: 1px solid rgba(232,160,48,0.2);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #fff 20%, #e8a030 50%, #d4782a 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 20px;
+    color: var(--text-dim);
+    max-width: 620px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-meta-item { text-align: center; }
+
+  .hero-meta-item .value {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .hero-meta-item .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 24px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 680px;
+    margin-bottom: 60px;
+    font-weight: 300;
+  }
+
+  /* ─── NAMING ─── */
+  .names-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .name-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    position: relative;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .name-card:hover { transform: translateY(-4px); border-color: rgba(79,140,255,0.3); }
+
+  .name-card.featured {
+    grid-column: span 2;
+    background: linear-gradient(135deg, rgba(79,140,255,0.08), rgba(124,92,255,0.08));
+    border-color: rgba(79,140,255,0.2);
+  }
+
+  .name-card .brand-name { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+  .name-card .brand-domain { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 16px; }
+  .name-card .brand-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+
+  .name-card .brand-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 16px;
+  }
+
+  .tag-recommended { background: rgba(0,212,170,0.15); color: var(--accent-3); }
+  .tag-bold { background: rgba(255,107,138,0.15); color: #ff6b8a; }
+  .tag-neutral { background: rgba(79,140,255,0.15); color: var(--accent); }
+  .tag-clean { background: rgba(124,92,255,0.15); color: var(--accent-2); }
+
+  /* ─── GLASSMORPHIC MOCKUP ─── */
+  .glass-mockup-scene {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    min-height: 780px;
+    background: #1a1a1a;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .glass-mockup-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.6) 100%),
+      url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1400&q=80&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .glass-property-tag {
+    position: absolute;
+    top: 20px;
+    left: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 100px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.06);
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.2px;
+  }
+
+  .glass-property-tag .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-3);
+  }
+
+  .glass-content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    min-height: 780px;
+    padding: 0 20px 20px;
+  }
+
+  .glass-logo-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .glass-logo {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+  }
+
+  .glass-logo span {
+    color: rgba(232,160,48,0.9);
+  }
+
+  .glass-surface {
+    background: rgba(10,10,20,0.15);
+    backdrop-filter: blur(48px) saturate(1.3);
+    -webkit-backdrop-filter: blur(48px) saturate(1.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 18px 24px 14px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.5);
+  }
+
+  .glass-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .glass-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+
+  .glass-meta {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 3px;
+  }
+
+  .glass-header-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .glass-status {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(0,212,170,0.7);
+    letter-spacing: 0.3px;
+  }
+
+  .glass-step-dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .glass-step-dots .sd {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .glass-step-dots .sd.done { background: rgba(0,212,170,0.45); }
+  .glass-step-dots .sd.active { background: rgba(232,160,48,0.65); }
+
+  .glass-step-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .glass-sep {
+    height: 1px;
+    background: rgba(255,255,255,0.05);
+    margin-bottom: 12px;
+  }
+
+  .glass-diff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .glass-diff-side { display: flex; flex-direction: column; gap: 0; }
+
+  .glass-col-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: rgba(255,255,255,0.55);
+    padding-bottom: 6px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .glass-fee-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 6px;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+
+  .glass-fee-row .name { color: rgba(255,255,255,0.8); }
+  .glass-fee-row .amount { font-weight: 600; font-variant-numeric: tabular-nums; color: rgba(255,255,255,1.0); display: flex; align-items: center; }
+  .glass-fee-row.match .amount { color: rgba(0,212,170,0.7); }
+
+  .glass-fee-row.mismatch {
+    position: relative;
+  }
+  .glass-fee-row.mismatch .name { color: #ff7a95; }
+  .glass-fee-row.mismatch .amount { color: #ff7a95; }
+
+  .glass-matched-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 6px 2px;
+    cursor: pointer;
+  }
+
+  .glass-matched-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .glass-matched-chevron {
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+
+  .glass-diff-side.expanded .glass-matched-chevron {
+    transform: rotate(90deg);
+  }
+
+  .glass-matched-rows {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .glass-diff-side.expanded .glass-matched-rows {
+    max-height: 200px;
+  }
+
+  .glass-fee-row .info-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,120,140,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,120,140,0.6);
+    margin-right: 6px;
+    flex-shrink: 0;
+    font-style: italic;
+    font-family: Georgia, serif;
+  }
+
+  .glass-footnote {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+  }
+
+  .glass-footnote strong { color: rgba(255,160,160,0.8); font-weight: 600; }
+
+  .glass-compact-stats {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .glass-stat-item {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+  }
+
+  .glass-stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .glass-stat-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .glass-stat-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .glass-compact-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .glass-suggestions {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .glass-suggestions-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: rgba(232,160,48,0.5);
+    margin-bottom: 6px;
+  }
+
+  .glass-suggestion-row {
+    margin-bottom: 4px;
+  }
+
+  .glass-explain {
+    font-weight: 400;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .glass-suggestion-explain {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    padding: 2px 6px 4px;
+    line-height: 1.4;
+  }
+
+  .glass-suggestions .glass-fee-row.mismatch {
+    background: none;
+    border: none;
+  }
+
+  .glass-suggestions .glass-fee-row.mismatch .amount {
+    color: rgba(232,160,48,0.8);
+  }
+
+  .glass-actions {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  .glass-btn {
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: default;
+    letter-spacing: 0.2px;
+  }
+
+  .glass-btn-primary {
+    background: rgba(0,200,155,0.25);
+    border: 1px solid rgba(0,230,180,0.25);
+    color: rgba(61,255,200,0.9);
+  }
+
+  .glass-btn-secondary {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.65);
+  }
+
+  .glass-image-source-bar {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 7px 14px;
+    border-radius: 100px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.06);
+    font-size: 12px;
+    letter-spacing: 0.2px;
+  }
+
+  .glass-image-source-bar span {
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+  }
+
+  .glass-image-source-bar span.active {
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* ─── DESIGN PRINCIPLES GRID ─── */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .principle-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+  }
+
+  .principle-card .p-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+  .principle-card .p-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* ─── MOBILE MOCKUP ─── */
+  .mobile-mockup-row {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+
+  .mobile-frame {
+    width: 320px;
+    height: 640px;
+    border-radius: 40px;
+    border: 2px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    background: #0a0a0a;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .mobile-pill {
+    position: absolute;
+    top: 42px;
+    left: 14px;
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 100px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.06);
+    font-size: 10px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.2px;
+  }
+
+  .mobile-pill .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-3);
+  }
+
+  .mobile-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 30px;
+    background: #000;
+    border-radius: 0 0 18px 18px;
+    z-index: 20;
+  }
+
+  .mobile-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.6) 100%),
+      url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .mobile-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 14px 14px;
+    gap: 0;
+  }
+
+  .mobile-logo-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .mobile-logo {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #fff;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+
+  .mobile-logo span {
+    color: rgba(232,160,48,0.9);
+  }
+
+  .mobile-surface {
+    background: rgba(10,10,20,0.15);
+    backdrop-filter: blur(48px) saturate(1.3);
+    -webkit-backdrop-filter: blur(48px) saturate(1.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 16px 18px 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  .mobile-fee {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 5px 0;
+  }
+
+  .mobile-suggest {
+    cursor: pointer;
+  }
+
+  .mobile-suggest .mobile-explain-toggle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    transition: transform 0.2s;
+    display: inline-block;
+    margin-left: 2px;
+  }
+
+  .mobile-suggest .mobile-explain-text {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.4;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease;
+    padding: 0;
+  }
+
+  .mobile-suggest.open .mobile-explain-toggle {
+    transform: rotate(90deg);
+    color: rgba(255,255,255,0.5);
+  }
+
+  .mobile-suggest.open .mobile-explain-text {
+    max-height: 40px;
+    padding: 1px 0 3px;
+  }
+
+  .mobile-nav {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding: 12px 0 2px;
+  }
+
+  .mobile-nav span {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .mobile-nav span.active { color: rgba(255,255,255,0.95); }
+
+  .mobile-desc {
+    flex: 1;
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.6;
+    padding-top: 8px;
+  }
+
+  .mobile-desc-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  /* ─── ARCHITECTURE ─── */
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 48px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arch-diagram::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(124,92,255,0.06), transparent);
+    pointer-events: none;
+  }
+
+  .arch-layers { display: flex; flex-direction: column; gap: 16px; }
+
+  .arch-layer { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+  .arch-layer-label {
+    width: 140px;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+  }
+
+  .arch-blocks { display: flex; gap: 10px; flex-wrap: wrap; flex: 1; }
+
+  .arch-block {
+    padding: 14px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid;
+    flex: 1;
+    min-width: 130px;
+    text-align: center;
+  }
+
+  .arch-block.blue { background: rgba(232,160,48,0.08); border-color: rgba(232,160,48,0.2); color: var(--accent); }
+  .arch-block.purple { background: rgba(212,120,42,0.08); border-color: rgba(212,120,42,0.2); color: var(--accent-2); }
+  .arch-block.green { background: rgba(0,212,170,0.08); border-color: rgba(0,212,170,0.2); color: var(--accent-3); }
+  .arch-block.pink { background: rgba(255,107,138,0.08); border-color: rgba(255,107,138,0.2); color: #ff6b8a; }
+  .arch-block.orange { background: rgba(245,166,35,0.08); border-color: rgba(245,166,35,0.2); color: #f5a623; }
+  .arch-block.white { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); color: var(--text-dim); }
+
+  .arch-arrow { text-align: center; color: var(--text-muted); font-size: 20px; padding: 4px 0; }
+
+  /* ─── WORKFLOW ─── */
+  .workflow-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 48px;
+    margin-bottom: 40px;
+  }
+
+  .workflow-flow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .workflow-node {
+    padding: 0;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    background: none;
+  }
+
+  .workflow-node.blue { color: var(--accent); }
+  .workflow-node.green { color: var(--accent-3); }
+  .workflow-node.pink { color: #ff6b8a; }
+
+  .workflow-arrow { color: var(--text-muted); font-size: 16px; flex-shrink: 0; }
+
+  .workflow-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .workflow-agent {
+    background: var(--surface-2);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    text-align: center;
+  }
+
+  .workflow-agent-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .workflow-agent-name { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .workflow-agent-desc { font-size: 12px; color: var(--text-dim); }
+
+  /* ─── COMPARISON CARDS ─── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  .compare-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    position: relative;
+  }
+
+  .compare-card.recommended {
+    border-color: rgba(0,212,170,0.3);
+    background: linear-gradient(135deg, rgba(0,212,170,0.05), rgba(79,140,255,0.05));
+  }
+
+  .compare-card.recommended::after {
+    content: '★ RECOMMENDED';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent-3);
+    background: rgba(0,212,170,0.15);
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  .compare-name { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+
+  .compare-type {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .compare-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.6; }
+
+  .compare-pros { list-style: none; margin-bottom: 16px; }
+
+  .compare-pros li {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 4px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .compare-pros li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-3); font-weight: 700; }
+  .compare-cons li::before { content: '✗'; color: #ff6b8a; }
+
+  .compare-cost {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── TIMELINE ─── */
+  .timeline { position: relative; padding-left: 60px; }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 16px;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-2), var(--accent-3), #ff6b8a, transparent);
+  }
+
+  .timeline-phase { position: relative; margin-bottom: 60px; }
+
+  .timeline-phase::before {
+    content: '';
+    position: absolute;
+    left: -44px;
+    top: 8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 20px rgba(79,140,255,0.4);
+  }
+
+  .timeline-phase:nth-child(2)::before { background: var(--accent-2); box-shadow: 0 0 20px rgba(124,92,255,0.4); }
+  .timeline-phase:nth-child(3)::before { background: var(--accent-3); box-shadow: 0 0 20px rgba(0,212,170,0.4); }
+  .timeline-phase:nth-child(4)::before { background: #ff6b8a; box-shadow: 0 0 20px rgba(255,107,138,0.4); }
+  .timeline-phase:nth-child(5)::before { background: #f5a623; box-shadow: 0 0 20px rgba(245,166,35,0.4); }
+
+  .phase-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+  .phase-name { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; }
+
+  .phase-duration {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    background: rgba(79,140,255,0.1);
+    padding: 4px 14px;
+    border-radius: 100px;
+  }
+
+  .phase-desc { color: var(--text-dim); font-size: 15px; margin-bottom: 20px; max-width: 640px; }
+
+  .phase-tasks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .task-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    font-size: 14px;
+  }
+
+  .task-card .task-title { font-weight: 600; margin-bottom: 6px; }
+  .task-card .task-detail { color: var(--text-dim); font-size: 13px; }
+
+  /* ─── SCALE SECTION ─── */
+  .scale-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .scale-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+  }
+
+  .scale-card .s-value {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .scale-card .s-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .scale-card .s-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+
+  /* ─── COST TABLE ─── */
+  .cost-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+
+  .cost-table th {
+    text-align: left;
+    padding: 14px 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cost-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cost-table tr:last-child td { border-bottom: none; font-weight: 600; color: var(--text); }
+  .cost-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 600; }
+
+  /* ─── DIVIDER ─── */
+  .divider { height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
+
+  .footer {
+    text-align: center;
+    padding: 80px 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .footer-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .glass-diff-grid { grid-template-columns: 1fr; }
+    .name-card.featured { grid-column: span 1; }
+    .timeline { padding-left: 40px; }
+    .timeline::before { left: 14px; }
+    .timeline-phase::before { left: -34px; }
+    .workflow-flow { flex-wrap: wrap; }
+    .workflow-arrow { }
+    .mobile-mockup-row { flex-direction: column; align-items: center; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero-badge">● Technical Roadmap v2</div>
+  <h1>ClearClose</h1>
+  <p class="hero-sub">AI-powered neutral Closing Disclosure balancing. Reconcile in seconds, not days. Beautiful glass UI over the home that matters.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="value">4 Phases</div>
+      <div class="label">MVP → Scale</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="value">$25–45</div>
+      <div class="label">Per Closing</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="value">CF Edge</div>
+      <div class="label">Infrastructure</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ THE PROBLEM ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">The Problem</div>
+  <h2 class="section-title" style="font-size: clamp(28px, 4vw, 42px);">Today</h2>
+  <p class="section-desc" style="max-width: 800px; font-size: 17px; line-height: 1.8;">Lender emails a CD. Title emails theirs back. Someone opens both PDFs and goes line by line. <em>"Your title fee says $275, ours says $300 — same fee?"</em> Three to five email rounds later, maybe hours, maybe days, the numbers finally match. Meanwhile, a family is waiting to move in.</p>
+
+  <h2 class="section-title" style="font-size: clamp(28px, 4vw, 42px); margin-top: 48px;">Solution</h2>
+  <p class="section-desc" style="max-width: 800px; font-size: 17px; line-height: 1.8;">Both sides upload to one portal. AI reads both documents, spots that "Title Search" and "Title Examination" are the same fee, flags the $25 difference, suggests the fix with an explanation, checks TRID tolerances — and notifies both parties with a magic link. If everything's clean, the balanced CD goes out automatically. Zero rounds, zero emails, seconds not days.</p>
+</section>
+
+<!-- ═══════════ NAMING ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">01 — Naming & Brand</div>
+  <h2 class="section-title">Name Candidates</h2>
+  <p class="section-desc">Evaluated for domain availability, mortgage industry resonance, neutrality positioning, and memorability.</p>
+
+  <div class="names-grid">
+    <div class="name-card featured">
+      <div class="brand-name" style="background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ClearClose</div>
+      <div class="brand-domain">clearclose.com · clearclose.io</div>
+      <div class="brand-desc">Communicates exactly what the product does — brings clarity to the closing process. Clean, professional, instantly understood. The double-C creates a strong visual mark. Works as both noun ("Use ClearClose") and verb ("Let's ClearClose this file").</div>
+      <span class="brand-tag tag-recommended">★ Top Pick</span>
+    </div>
+    <div class="name-card">
+      <div class="brand-name">SettleSync</div>
+      <div class="brand-domain">settlesync.com</div>
+      <div class="brand-desc">"Settle" maps to settlement statements. "Sync" signals reconciliation between two parties. Strong tech feel without being intimidating.</div>
+      <span class="brand-tag tag-bold">Strong Runner-Up</span>
+    </div>
+    <div class="name-card">
+      <div class="brand-name">BalanceFlow</div>
+      <div class="brand-domain">balanceflow.ai</div>
+      <div class="brand-desc">Original suggestion. "Balance" is the core action, "Flow" implies smooth workflow. Good but slightly generic — could be fintech or accounting.</div>
+      <span class="brand-tag tag-neutral">Viable</span>
+    </div>
+    <div class="name-card">
+      <div class="brand-name">TrueBalance</div>
+      <div class="brand-domain">truebalance.ai</div>
+      <div class="brand-desc">Emphasizes accuracy and trust — critical for financial documents. "True" reinforces the neutral positioning between lender and title.</div>
+      <span class="brand-tag tag-clean">Trust Signal</span>
+    </div>
+    <div class="name-card">
+      <div class="brand-name">ClosingLens</div>
+      <div class="brand-domain">closinglens.com</div>
+      <div class="brand-desc">"Lens" implies scrutiny and transparency. Good for marketing: "See every discrepancy." Suggests AI precision.</div>
+      <span class="brand-tag tag-neutral">Visual Metaphor</span>
+    </div>
+    <div class="name-card">
+      <div class="brand-name">Recon·CD</div>
+      <div class="brand-domain">reconcd.com</div>
+      <div class="brand-desc">Short for "Reconcile CD." Direct, technical, no-nonsense. Appeals to power users. Great product name within a larger brand.</div>
+      <span class="brand-tag tag-clean">Technical</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FRONT-END DESIGN ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">02 — Front-End Design</div>
+  <h2 class="section-title">Glass Over the Home</h2>
+  <p class="section-desc">Full-bleed property photography fills the screen. One frosted glass surface sits at the bottom — everything the user needs, nothing they don't. Inspired by Apple's Liquid Glass: the UI refracts the content behind it, not replaces it.</p>
+
+  <!-- Desktop Mockup -->
+  <div style="margin-bottom: 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted);">Desktop — Reconciliation View</div>
+
+  <div class="glass-mockup-scene">
+    <div class="glass-mockup-bg"></div>
+    <div class="glass-property-tag">
+      <span class="dot"></span>
+      742 Oak Ave, Westfield NJ
+    </div>
+    <div class="glass-image-source-bar">
+      <span>Files</span>
+      <span class="active">Review</span>
+      <span>Settings</span>
+    </div>
+
+    <div class="glass-content">
+      <div class="glass-logo-area">
+        <div class="glass-logo">Clear<span>Close</span></div>
+        <div style="position: absolute; bottom: -20px; font-size: 9px; letter-spacing: 0.5px; color: rgba(255,255,255,0.25); text-transform: uppercase;">Logo not final</div>
+      </div>
+      <div class="glass-surface">
+        <div class="glass-header">
+          <div>
+            <div class="glass-title">Johnson Purchase</div>
+            <div class="glass-meta">First National Bank → Landmark Title</div>
+          </div>
+          <div class="glass-header-right">
+            <span class="glass-step-label">Reviewing</span>
+          </div>
+        </div>
+        <div class="glass-sep"></div>
+        <div class="glass-diff-grid">
+          <div class="glass-diff-side">
+            <div class="glass-col-label">Lender CD</div>
+            <div class="glass-fee-row mismatch"><span class="name">Title Search</span><span class="amount">$275.00</span></div>
+            <div class="glass-fee-row mismatch"><span class="name">Tax Proration</span><span class="amount">$1,847.23</span></div>
+            <div class="glass-matched-toggle" onclick="this.closest('.glass-diff-grid').querySelectorAll('.glass-diff-side').forEach(s => s.classList.toggle('expanded'))">
+              <span class="glass-matched-label">4 matched</span><span class="glass-matched-chevron">›</span>
+            </div>
+            <div class="glass-matched-rows">
+              <div class="glass-fee-row match"><span class="name">Origination Fee</span><span class="amount">$1,500.00</span></div>
+              <div class="glass-fee-row match"><span class="name">Appraisal Fee</span><span class="amount">$450.00</span></div>
+              <div class="glass-fee-row match"><span class="name">Recording Fee</span><span class="amount">$125.00</span></div>
+              <div class="glass-fee-row match"><span class="name">Homeowner Ins.</span><span class="amount">$1,200.00</span></div>
+            </div>
+          </div>
+          <div class="glass-diff-side">
+            <div class="glass-col-label">Title Settlement</div>
+            <div class="glass-fee-row mismatch"><span class="name">Title Examination</span><span class="amount">$300.00</span></div>
+            <div class="glass-fee-row mismatch"><span class="name">Tax Proration</span><span class="amount">$1,862.50</span></div>
+            <div class="glass-matched-toggle" onclick="this.closest('.glass-diff-grid').querySelectorAll('.glass-diff-side').forEach(s => s.classList.toggle('expanded'))">
+              <span class="glass-matched-label">4 matched</span><span class="glass-matched-chevron">›</span>
+            </div>
+            <div class="glass-matched-rows">
+              <div class="glass-fee-row match"><span class="name">Origination Fee</span><span class="amount">$1,500.00</span></div>
+              <div class="glass-fee-row match"><span class="name">Appraisal Fee</span><span class="amount">$450.00</span></div>
+              <div class="glass-fee-row match"><span class="name">Recording Fee</span><span class="amount">$125.00</span></div>
+              <div class="glass-fee-row match"><span class="name">Homeowner Ins.</span><span class="amount">$1,200.00</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="glass-suggestions">
+          <div class="glass-suggestions-label">AI Suggestions</div>
+          <div class="glass-fee-row mismatch"><span class="name">Title Search <span class="glass-explain">— Same fee, title's $300 per county schedule</span></span><span class="amount" style="display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums;"><span style="color: #ff7a95; text-align: right; min-width: 62px; display: inline-block;">$275.00</span><span style="color: rgba(255,255,255,0.3);">→</span><span style="color: rgba(0,212,170,0.85); text-align: right; min-width: 62px; display: inline-block;">$300.00</span></span></div>
+          <div class="glass-fee-row mismatch"><span class="name">Tax Proration <span class="glass-explain">— 360 vs 365-day method, recalculated</span></span><span class="amount" style="display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums;"><span style="color: #ff7a95; text-align: right; min-width: 62px; display: inline-block;">$1,847.23</span><span style="color: rgba(255,255,255,0.3);">→</span><span style="color: rgba(0,212,170,0.85); text-align: right; min-width: 62px; display: inline-block;">$1,862.50</span></span></div>
+        </div>
+        <div class="glass-actions">
+          <div class="glass-btn glass-btn-secondary">Export</div>
+          <div class="glass-btn glass-btn-primary">Accept AI Suggestions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Mobile + Description -->
+  <div class="mobile-mockup-row">
+    <div class="mobile-frame">
+      <div class="mobile-notch"></div>
+      <div class="mobile-bg"></div>
+      <div class="mobile-pill">
+        <span class="dot"></span>
+        742 Oak Ave, Westfield NJ
+      </div>
+      <div class="mobile-content">
+        <div class="mobile-logo-area">
+          <div class="mobile-logo">Clear<span>Close</span></div>
+          <div style="position: absolute; bottom: -14px; font-size: 8px; letter-spacing: 0.5px; color: rgba(255,255,255,0.25); text-transform: uppercase;">Logo not final</div>
+        </div>
+        <div class="mobile-surface">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <div>
+              <div style="font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.3px;">Johnson Purchase</div>
+              <div style="font-size: 11px; color: rgba(255,255,255,0.75); margin-top: 2px;">First National → Landmark Title</div>
+            </div>
+            <div style="margin-top: 6px;">
+              <div style="font-size: 10px; color: rgba(255,255,255,0.75); font-weight: 600;">Reviewing</div>
+            </div>
+          </div>
+          <div style="height: 1px; background: rgba(255,255,255,0.05); margin-bottom: 10px;"></div>
+          <div style="font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(232,160,48,0.5); margin-bottom: 6px;">AI Suggestions</div>
+          <div class="mobile-suggest open" onclick="this.classList.toggle('open')">
+            <div class="mobile-fee"><span style="color: rgba(255,255,255,0.8)">Title Search</span><span style="font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; font-variant-numeric: tabular-nums;"><span style="color: #ff7a95;">$275.00</span><span style="color: rgba(255,255,255,0.3);">→</span><span style="color: rgba(0,212,170,0.85);">$300.00</span><span class="mobile-explain-toggle">›</span></span></div>
+            <div class="mobile-explain-text">Same fee, title's $300 per county schedule</div>
+          </div>
+          <div class="mobile-suggest" onclick="this.classList.toggle('open')">
+            <div class="mobile-fee"><span style="color: rgba(255,255,255,0.8)">Tax Proration</span><span style="font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; font-variant-numeric: tabular-nums;"><span style="color: #ff7a95;">$1,847.23</span><span style="color: rgba(255,255,255,0.3);">→</span><span style="color: rgba(0,212,170,0.85);">$1,862.50</span><span class="mobile-explain-toggle">›</span></span></div>
+            <div class="mobile-explain-text">360 vs 365-day method, recalculated</div>
+          </div>
+          <div style="margin-top: 12px; padding: 9px 0; border-radius: 10px; text-align: center; background: rgba(0,200,155,0.2); border: 1px solid rgba(0,230,180,0.2);">
+            <div style="font-size: 13px; font-weight: 600; color: rgba(61,255,200,0.9);">Accept AI Suggestions</div>
+          </div>
+        </div>
+        <div class="mobile-nav">
+          <span>Files</span>
+          <span class="active">Review</span>
+          <span>Settings</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-desc">
+      <div class="mobile-desc-title">Design Principles</div>
+      <div class="principles-grid" style="margin-top: 0;">
+        <div class="principle-card">
+          <div class="p-title">Property as Background</div>
+          <div class="p-desc">The actual home photo fills the entire viewport. Sourced from MLS API (first choice) or curated property photography (fallback). Every file feels personal.</div>
+        </div>
+        <div class="principle-card">
+          <div class="p-title">Minimal Glass UI</div>
+          <div class="p-desc">One frosted surface, anchored to the bottom. Inspired by Apple's Liquid Glass — the panel floats over the property, not on top of it. No stacked cards, no visual clutter.</div>
+        </div>
+        <div class="principle-card">
+          <div class="p-title">Almost No UI</div>
+          <div class="p-desc">The diff, the AI suggestions, the approve button. That's it. Progress is a single word — not a stepper. Mismatches in red, fixes in green. Like a HUD, not a dashboard.</div>
+        </div>
+        <div class="principle-card">
+          <div class="p-title">Emotional Motivation</div>
+          <div class="p-desc">Both parties see the house and are reminded why they need to balance fast — someone's waiting to move in. The image creates urgency and human connection.</div>
+        </div>
+        <div class="principle-card">
+          <div class="p-title">Image Tier System</div>
+          <div class="p-desc">MLS photo via API when the address matches. Curated property photography as fallback — always premium, always on-brand.</div>
+        </div>
+        <div class="principle-card">
+          <div class="p-title">Mobile-Ready Approval</div>
+          <div class="p-desc">Responsive web works on any device. Open the link → see the house → see the issues → approve. No app install needed. Under 10 seconds for pre-reviewed files.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ AUTH ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">03 — Authentication</div>
+  <h2 class="section-title">Passwordless Accounts</h2>
+  <p class="section-desc">Fast account creation with no passwords. Users need accounts for history, billing, preferences, and audit compliance — but signup should feel invisible.</p>
+
+  <div class="principles-grid">
+    <div class="principle-card">
+      <div class="p-title">Email Magic Link (Default)</div>
+      <div class="p-desc">Enter email, receive link, click, you're in. Same flow as file invites — users barely realize they've "signed up." Session persists until expiry or logout.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">SMS Code</div>
+      <div class="p-desc">Phone number + 6-digit code. Mortgage people live on phones. Doubles as MFA for security-conscious orgs.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Sign in with Google/Microsoft</div>
+      <div class="p-desc">One tap. Most title companies and lenders are on Google Workspace or M365. Gets verified name + email automatically for audit trail.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Invisible Onboarding</div>
+      <div class="p-desc">First interaction: get invited to a file → verify email → you're viewing AND you have an account. No separate signup flow. No password to remember.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Why Accounts Matter</div>
+      <div class="p-desc"><strong>History:</strong> past files, search, pending tracking. <strong>Billing:</strong> payment method tied to user/org. <strong>Audit:</strong> named identity for every approval. <strong>Preferences:</strong> saved proration methods, contacts.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Open-Source Auth Stack</div>
+      <div class="p-desc">Lightweight OSS auth (Auth.js, Lucia, or custom Workers implementation). Magic links + OAuth stored in D1. Sessions via signed tokens. No vendor lock-in, no per-user fees.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ARCHITECTURE ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">04 — System Architecture</div>
+  <h2 class="section-title">Cloudflare + Mastra</h2>
+  <p class="section-desc">TypeScript end-to-end. Mastra handles agent orchestration, Cloudflare handles everything the user touches. Architecture scales naturally with volume.</p>
+
+  <div class="arch-diagram">
+    <div class="arch-layers">
+      <div class="arch-layer">
+        <div class="arch-layer-label">Clients</div>
+        <div class="arch-blocks">
+          <div class="arch-block blue">React / Next.js</div>
+          <div class="arch-block blue">iOS / Android (Flutter)</div>
+          <div class="arch-block blue">Email Magic Links</div>
+        </div>
+      </div>
+      <div class="arch-arrow">↕</div>
+      <div class="arch-layer">
+        <div class="arch-layer-label">Edge (CF)</div>
+        <div class="arch-blocks">
+          <div class="arch-block orange">Workers (API + Hono)</div>
+          <div class="arch-block orange">Pages (Frontend)</div>
+          <div class="arch-block orange">Durable Objects (Real-time)</div>
+        </div>
+      </div>
+      <div class="arch-arrow">↕</div>
+      <div class="arch-layer">
+        <div class="arch-layer-label">Agent Layer</div>
+        <div class="arch-blocks">
+          <div class="arch-block green">Mastra Extraction Agent</div>
+          <div class="arch-block green">Mastra Reconciliation Agent</div>
+          <div class="arch-block green">Mastra Suggestion Agent</div>
+          <div class="arch-block green">Mastra TRID Agent</div>
+          <div class="arch-block green">Mastra Report Agent</div>
+          <div class="arch-block green">Mastra Notification Agent</div>
+        </div>
+      </div>
+      <div class="arch-arrow">↕</div>
+      <div class="arch-layer">
+        <div class="arch-layer-label">LLM + Math</div>
+        <div class="arch-blocks">
+          <div class="arch-block purple">Claude API (Extraction + Matching)</div>
+          <div class="arch-block purple">Deterministic Math Engine</div>
+        </div>
+      </div>
+      <div class="arch-arrow">↕</div>
+      <div class="arch-layer">
+        <div class="arch-layer-label">Data (CF)</div>
+        <div class="arch-blocks">
+          <div class="arch-block orange">R2 (PDF Storage)</div>
+          <div class="arch-block orange">D1 (SQLite DB)</div>
+          <div class="arch-block orange">KV (Fee Cache)</div>
+          <div class="arch-block orange">Queues (Async Jobs)</div>
+        </div>
+      </div>
+      <div class="arch-arrow">↕</div>
+      <div class="arch-layer">
+        <div class="arch-layer-label">External</div>
+        <div class="arch-blocks">
+          <div class="arch-block white">OSS Auth (D1)</div>
+          <div class="arch-block white">Postmark (Email)</div>
+          <div class="arch-block white">MLS API (Photos)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Workflow -->
+  <div class="workflow-diagram">
+    <h3 style="font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; margin-bottom: 8px;">Mastra Agent Pipeline</h3>
+    <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 32px;">Each upload triggers a workflow on Cloudflare Workers. Clean files go straight through — no human touch. Low-confidence extractions or mismatches route to the human review gate. The Suggestion Agent proposes fixes for every mismatch. All math runs in a deterministic engine — never through the LLM. Both parties are notified at every state change.</p>
+
+    <div class="workflow-flow">
+      <div class="workflow-node blue">📄 PDF Upload</div>
+      <div class="workflow-arrow">→</div>
+      <div class="workflow-node green">🔍 Extract</div>
+      <div class="workflow-arrow">→</div>
+      <div class="workflow-node pink">👤 Review?</div>
+      <div class="workflow-arrow">→</div>
+      <div class="workflow-node green">⚖️ Reconcile</div>
+      <div class="workflow-arrow">→</div>
+      <div class="workflow-node blue">💡 Suggest</div>
+      <div class="workflow-arrow">→</div>
+      <div class="workflow-node green">✅ TRID Check</div>
+      <div class="workflow-arrow">→</div>
+      <div class="workflow-node blue">📋 Report</div>
+      <div class="workflow-arrow">→</div>
+      <div class="workflow-node pink">🔔 Notify</div>
+    </div>
+
+    <div class="workflow-details">
+      <div class="workflow-agent">
+        <div class="workflow-agent-icon" style="background: rgba(232,160,48,0.15);">🔍</div>
+        <div class="workflow-agent-name">Extraction Agent</div>
+        <div class="workflow-agent-desc">PDF pages → Claude vision extracts and normalizes line items into typed JSON (Zod schema) with confidence scores per field. Low-confidence fields flagged for human review. Fee mappings cached in KV.</div>
+      </div>
+      <div class="workflow-agent">
+        <div class="workflow-agent-icon" style="background: rgba(255,107,138,0.15);">👤</div>
+        <div class="workflow-agent-name">Human Review Gate (Conditional)</div>
+        <div class="workflow-agent-desc">Only triggers when extraction confidence is low. Flagged fields shown in amber in the UI. User verifies or corrects inline. High-confidence files skip this step entirely — full automation on the happy path.</div>
+      </div>
+      <div class="workflow-agent">
+        <div class="workflow-agent-icon" style="background: rgba(0,212,170,0.15);">⚖️</div>
+        <div class="workflow-agent-name">Reconciliation Agent</div>
+        <div class="workflow-agent-desc">Claude fuzzy-matches line items across documents. Deterministic engine handles all math. Flags mismatches and passes them to the Suggestion Agent.</div>
+      </div>
+      <div class="workflow-agent">
+        <div class="workflow-agent-icon" style="background: rgba(232,160,48,0.15);">💡</div>
+        <div class="workflow-agent-name">Suggestion Agent</div>
+        <div class="workflow-agent-desc">Analyzes each mismatch and proposes a fix: naming normalization, proration method alignment, county fee schedules. Each suggestion includes a plain-English explanation. Powers the red→green UI.</div>
+      </div>
+      <div class="workflow-agent">
+        <div class="workflow-agent-icon" style="background: rgba(212,120,42,0.15);">✅</div>
+        <div class="workflow-agent-name">TRID Agent</div>
+        <div class="workflow-agent-desc">Checks tolerance buckets (zero, 10%, unlimited). Flags re-disclosure triggers. All rules codified — no LLM ambiguity on compliance.</div>
+      </div>
+      <div class="workflow-agent">
+        <div class="workflow-agent-icon" style="background: rgba(255,107,138,0.15);">📋</div>
+        <div class="workflow-agent-name">Report Agent</div>
+        <div class="workflow-agent-desc">Generates balanced PDF, plain-English diff summary, and audit trail to D1. Passes result to Notification Agent.</div>
+      </div>
+      <div class="workflow-agent">
+        <div class="workflow-agent-icon" style="background: rgba(255,107,138,0.15);">🔔</div>
+        <div class="workflow-agent-name">Notification Agent</div>
+        <div class="workflow-agent-desc">Routes alerts based on file state. New upload → email both parties with magic link. Mismatches found → notify reviewer. Approval needed → nudge counterparty. All balanced → "Ready to Schedule" email. Postmark for email, push notifications in Phase 4.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why Mastra -->
+  <div style="margin-bottom: 16px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted);">Why Mastra + Cloudflare</div>
+  <div class="principles-grid">
+    <div class="principle-card">
+      <div class="p-title">TypeScript End-to-End</div>
+      <div class="p-desc">One language from frontend to agent pipeline. No Python/TS bridge. Mastra agents deploy directly to Cloudflare Workers via @mastra/deployer-cloudflare.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Built-in Workflows</div>
+      <div class="p-desc">Mastra's typed workflow system handles the Extract → Reconcile → Suggest → TRID → Report → Notify pipeline with branching, error recovery, and human-in-the-loop approval.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">79+ LLM Providers</div>
+      <div class="p-desc">Swap between Claude, GPT-4, Gemini by changing config. Start with Claude for extraction intelligence, A/B test others without rewriting agent logic.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Durable Objects = Per-File State</div>
+      <div class="p-desc">Each closing file is a Durable Object. Real-time state, WebSocket for live updates, instant approval locking. No race conditions between parties.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">R2 = Zero Egress</div>
+      <div class="p-desc">S3-compatible storage with no egress fees. Serving PDFs to both parties constantly? Free. At scale, this saves thousands vs. AWS S3.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">KV = Smart Fee Cache</div>
+      <div class="p-desc">Fee description mappings cached in KV. "Title Search" = "Title Examination" learned once, applied globally. Cuts LLM calls by 60-70% over time.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SCALE ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">05 — Scale Considerations</div>
+  <h2 class="section-title">What Volume Are We Designing For?</h2>
+  <p class="section-desc">The Cloudflare architecture scales naturally — Workers auto-scale, Queues absorb bursts, KV caching reduces cost over time. But target volume shapes decisions around database strategy, LLM spend, and compliance timelines. This is an open question for the client.</p>
+
+  <div class="principles-grid" style="margin-top: 32px;">
+    <div class="principle-card">
+      <div class="p-title">Stateless Workers</div>
+      <div class="p-desc">API and agent workers are stateless and horizontally scalable. Cloudflare auto-scales Workers globally — no capacity planning, no cold starts.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Queue-Based Processing</div>
+      <div class="p-desc">Upload → job on CF Queue → workers process → push results → notify via Durable Object WebSocket. Scales from a handful of workers to hundreds.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">D1 → External Postgres</div>
+      <div class="p-desc">Start with D1 (Cloudflare's SQLite). When audit log and version history outgrow it, migrate to external Postgres with partitioning. Schema stays the same.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Smart LLM Caching</div>
+      <div class="p-desc">KV cache learns fee mappings over time. Seen "Title Search" = "Title Examination" before? Skip the LLM. The system gets cheaper as it scales — estimated 60-70% reduction in LLM calls.</div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ═══════════ ROADMAP ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">06 — Technical Roadmap</div>
+  <h2 class="section-title">Build Phases</h2>
+  <p class="section-desc">Phased approach from MVP to full-scale platform. Same architecture throughout — no re-build between phases.</p>
+
+  <div class="timeline">
+    <div class="timeline-phase">
+      <div class="phase-header">
+        <div class="phase-name">Phase 1 — Core MVP</div>
+        <div class="phase-duration">Weeks 1–6</div>
+      </div>
+      <div class="phase-desc">Full automation on clean files. Human review only when extraction confidence is low or reconciliation has mismatches. Upload → balanced CD out, hands-off.</div>
+      <div class="phase-tasks">
+        <div class="task-card">
+          <div class="task-title">Mastra Agent Pipeline</div>
+          <div class="task-detail">Extract → Auto-reconcile → Suggest fixes → TRID → Report → Notify. Clean files go straight through with no human touch. Low-confidence extractions or mismatches trigger the human review gate. Every mismatch gets an AI-generated fix proposal.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">PDF Extraction</div>
+          <div class="task-detail">Claude vision reads PDF pages directly — no OCR dependency. Confidence scores per field. Low-confidence fields flagged with amber UI for inline editing.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Glass UI (React)</div>
+          <div class="task-detail">Full-bleed property photos, single frosted glass surface, side-by-side diff. Inline field editing for flagged extractions. Responsive web — works on mobile out of the box.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Auth + File Portal</div>
+          <div class="task-detail">Passwordless auth via OSS stack. Magic links + OAuth. Secure invite links per file. Durable Objects for per-file real-time state.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Infrastructure</div>
+          <div class="task-detail">R2 for encrypted PDFs. D1 for data. KV for fee cache. Queues for async. Audit logging from day one. Email notifications via Postmark.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Notification Flow</div>
+          <div class="task-detail">Event-driven alerts via Postmark. New file → magic link to both parties. Mismatches → reviewer notified. Approval needed → counterparty nudge. All balanced → "Ready to Schedule." Digest mode for high-volume users. Push notifications deferred to Phase 4.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-phase">
+      <div class="phase-header">
+        <div class="phase-name">Phase 2 — Collaboration + Insights</div>
+        <div class="phase-duration">Weeks 7–10</div>
+      </div>
+      <div class="phase-desc">In-platform discussion, dual-party approval workflow, AI-suggested fixes, property image pipeline, and a lightweight analytics dashboard.</div>
+      <div class="phase-tasks">
+        <div class="task-card">
+          <div class="task-title">Line-Item Comments</div>
+          <div class="task-detail">Threaded discussion per fee line. @mentions. Real-time via Durable Objects WebSocket. Replaces email back-and-forth.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Dual-Party Approval + Audit</div>
+          <div class="task-detail">Both sides approve → file locks → auto-generate balanced PDF → email "Ready to Schedule." Every action versioned with full audit log.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">AI Suggestion UX</div>
+          <div class="task-detail">One-click accept/reject per suggestion. Batch "Accept All" for clean files. Suggestion history and accuracy tracking. Feedback loop improves future suggestions via KV cache.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Property Image Pipeline</div>
+          <div class="task-detail">MLS API integration → curated property photography fallback. Image optimization + caching on CF.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Analytics (Lightweight)</div>
+          <div class="task-detail">Avg time-to-balance, discrepancy frequency, files per user. Simple dashboard built on data the pipeline already captures. Not full-blown — just visibility.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-phase">
+      <div class="phase-header">
+        <div class="phase-name">Phase 3 — Integrations</div>
+        <div class="phase-duration">Weeks 11–16</div>
+      </div>
+      <div class="phase-desc">Direct API connections to LOS and title platforms. Billing. SOC2 prep. Eliminate the PDF upload step for connected users.</div>
+      <div class="phase-tasks">
+        <div class="task-card">
+          <div class="task-title">Encompass API</div>
+          <div class="task-detail">Auto-pull CD data from ICE Mortgage Technology. Bidirectional sync. Eliminate PDF upload for Encompass users.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Title Platform APIs</div>
+          <div class="task-detail">Qualia, RamQuest, SoftPro connectors. Pull settlement statements, push balanced figures back.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Billing + SOC2 Type I</div>
+          <div class="task-detail">Stripe integration ($25-45/closing or monthly tiers). Engage compliance firm for SOC2. Access controls, pen testing, security documentation.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-phase">
+      <div class="phase-header">
+        <div class="phase-name">Phase 4 — Scale & Extras</div>
+        <div class="phase-duration">Weeks 17+</div>
+      </div>
+      <div class="phase-desc">Email ingestion, native mobile app (optional), advanced analytics, scale optimizations, and enterprise features.</div>
+      <div class="phase-tasks">
+        <div class="task-card">
+          <div class="task-title">Email Ingestion</div>
+          <div class="task-detail">Monitor dedicated inbox. Auto-detect CD attachments. Match to existing files or create new. Zero manual upload.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Flutter Mobile App (Optional)</div>
+          <div class="task-detail">Native iOS + Android with glass UI. Property photo backgrounds. Push notifications from the Notification Agent. Quick-approve. Only if demand warrants it — responsive web covers mobile until then.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Advanced Analytics</div>
+          <div class="task-detail">Team performance comparisons, common discrepancy patterns, ops manager dashboards. Full charting and exportable reports.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-title">Scale + Enterprise</div>
+          <div class="task-detail">D1 → external Postgres if needed. Tiered LLM strategy. SOC2 Type II. Advanced KV caching. White-label API for enterprise partners.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ OPEN QUESTIONS ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">07 — Open Questions</div>
+  <h2 class="section-title">Before We Start</h2>
+  <p class="section-desc">Three things we need from you to lock down the build plan.</p>
+
+  <div class="principles-grid" style="margin-top: 32px;">
+    <div class="principle-card" style="border-left: 3px solid var(--accent);">
+      <div class="p-title">1. Volume</div>
+      <div class="p-desc">How many closings are you thinking for MVP, and where does that go by end of year one?</div>
+    </div>
+    <div class="principle-card" style="border-left: 3px solid var(--accent);">
+      <div class="p-title">2. Compliance</div>
+      <div class="p-desc">Do we need SOC2 before we put the first file through, or can we launch small and certify in parallel?</div>
+    </div>
+    <div class="principle-card" style="border-left: 3px solid var(--accent);">
+      <div class="p-title">3. Sample Files</div>
+      <div class="p-desc">Can you get us 20-30 real files — whatever both sides actually pass back and forth during balancing today?</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ COST ESTIMATE ═══════════ -->
+<div class="divider"></div>
+<section class="section">
+  <div class="section-label">08 — Cost Estimate</div>
+  <h2 class="section-title">Infrastructure Budget</h2>
+  <p class="section-desc">Cloudflare's pricing model — especially zero egress on R2 — keeps infrastructure costs low. No OCR dependency eliminates the biggest variable cost.</p>
+
+  <table class="cost-table">
+    <thead>
+      <tr><th>Service</th><th>Purpose</th><th>Monthly (MVP)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CF Workers + Pages</td><td>API, frontend, agent execution</td><td>$5–50</td></tr>
+      <tr><td>CF R2</td><td>Encrypted PDF storage (zero egress)</td><td>$5–30</td></tr>
+      <tr><td>CF D1</td><td>Primary database (SQLite)</td><td>$5–25</td></tr>
+      <tr><td>CF KV</td><td>Fee description cache</td><td>$5–10</td></tr>
+      <tr><td>CF Queues + Durable Objects</td><td>Async jobs + real-time state</td><td>$10–50</td></tr>
+      <tr><td>Claude API (Anthropic)</td><td>Extraction, normalization, fuzzy matching</td><td>$200–600</td></tr>
+      <tr><td>Postmark</td><td>Transactional email</td><td>$10–25</td></tr>
+      <tr><td><strong>Total (~500 closings/mo)</strong></td><td><strong>Estimated monthly</strong></td><td><strong>$240–790</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="principles-grid">
+    <div class="principle-card">
+      <div class="p-title">Break-Even</div>
+      <div class="p-desc">At $35 avg per closing, infrastructure breaks even at roughly <strong style="color: var(--accent);">7–23 closings/month</strong>. Extremely low threshold to profitability.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">No OCR Dependency</div>
+      <div class="p-desc">Claude handles extraction directly from PDF pages — no Textract or Document AI. Eliminates $150-500/mo in OCR costs and removes an entire external dependency.</div>
+    </div>
+    <div class="principle-card">
+      <div class="p-title">Cost Curves Down</div>
+      <div class="p-desc">KV cache reduces LLM calls 60-70% over time. The more closings processed, the cheaper per-closing becomes. Inverse scaling economics.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div class="divider"></div>
+<footer class="footer">
+  <div class="footer-title">ClearClose — Technical Roadmap v2</div>
+  <p>Prepared for client review · February 2026 · axis4.ca</p>
+  <p style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">Cloudflare Edge · Mastra Agents · TypeScript · Flutter · Passwordless · Glass UI</p>
+</footer>
+
+</body>
+</html>
