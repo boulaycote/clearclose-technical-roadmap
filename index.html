@@ -1426,6 +1426,7 @@
           <div class="arch-block green">Mastra Extraction Agent</div>
           <div class="arch-block green">Mastra Reconciliation Agent</div>
           <div class="arch-block green">Mastra Suggestion Agent</div>
+          <div class="arch-block green">Mastra Correction Agent</div>
           <div class="arch-block green">Mastra TRID Agent</div>
           <div class="arch-block green">Mastra Report Agent</div>
           <div class="arch-block green">Mastra Notification Agent</div>
@@ -1445,7 +1446,7 @@
         <div class="arch-blocks">
           <div class="arch-block orange">R2 (PDF Storage)</div>
           <div class="arch-block orange">D1 (SQLite DB)</div>
-          <div class="arch-block orange">KV (Fee Cache)</div>
+          <div class="arch-block orange">Vectorize (Correction Memory)</div>
           <div class="arch-block orange">Queues (Async Jobs)</div>
         </div>
       </div>
@@ -1464,10 +1465,10 @@
   <!-- Agent Workflow -->
   <div class="workflow-diagram">
     <h3 style="font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; margin-bottom: 8px;">Mastra Agent Pipeline</h3>
-    <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 32px;">Each upload triggers a workflow on Cloudflare Workers. Clean files go straight through — no human touch. Low-confidence extractions or mismatches route to the human review gate. The Suggestion Agent proposes fixes for every mismatch. All math runs in a deterministic engine — never through the LLM. Both parties are notified at every state change.</p>
+    <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 32px;">Each upload triggers a workflow on Cloudflare Workers. Clean files go straight through — no human touch. Low-confidence extractions or mismatches route to the human review gate. The Suggestion Agent proposes fixes with plain-English reasons. Tap Accept to confirm, or tap any field to edit it — a memo field appears for optional context and the button changes to "Override &amp; Accept." Edits trigger the Correction Agent, which interprets the action and embeds the learning into Vectorize. All math runs in a deterministic engine — never through the LLM. Both parties are notified at every state change.</p>
 
     <div class="workflow-flow">
-      <div class="workflow-node blue">📄 PDF Upload</div>
+      <div class="workflow-node blue">📄 Upload</div>
       <div class="workflow-arrow">→</div>
       <div class="workflow-node green">🔍 Extract</div>
       <div class="workflow-arrow">→</div>
@@ -1477,7 +1478,9 @@
       <div class="workflow-arrow">→</div>
       <div class="workflow-node blue">💡 Suggest</div>
       <div class="workflow-arrow">→</div>
-      <div class="workflow-node green">✅ TRID Check</div>
+      <div class="workflow-node pink">✏️ Correct?</div>
+      <div class="workflow-arrow">→</div>
+      <div class="workflow-node green">✅ TRID</div>
       <div class="workflow-arrow">→</div>
       <div class="workflow-node blue">📋 Report</div>
       <div class="workflow-arrow">→</div>
@@ -1488,7 +1491,7 @@
       <div class="workflow-agent">
         <div class="workflow-agent-icon" style="background: rgba(232,160,48,0.15);">🔍</div>
         <div class="workflow-agent-name">Extraction Agent</div>
-        <div class="workflow-agent-desc">PDF pages → Claude vision extracts and normalizes line items into typed JSON (Zod schema) with confidence scores per field. Low-confidence fields flagged for human review. Fee mappings cached in KV.</div>
+        <div class="workflow-agent-desc">PDF pages → Claude vision extracts and normalizes line items into typed JSON (Zod schema) with confidence scores per field. Low-confidence fields flagged for human review.</div>
       </div>
       <div class="workflow-agent">
         <div class="workflow-agent-icon" style="background: rgba(255,107,138,0.15);">👤</div>
@@ -1503,7 +1506,12 @@
       <div class="workflow-agent">
         <div class="workflow-agent-icon" style="background: rgba(232,160,48,0.15);">💡</div>
         <div class="workflow-agent-name">Suggestion Agent</div>
-        <div class="workflow-agent-desc">Analyzes each mismatch and proposes a fix: naming normalization, proration method alignment, county fee schedules. Each suggestion includes a plain-English explanation. Powers the red→green UI.</div>
+        <div class="workflow-agent-desc">Searches Vectorize for similar prior corrections. If match found, proposes that fix with confidence score. If no match, reasons from scratch. Every suggestion includes a plain-English explanation shown to the human — this is what turns approval from a rubber stamp into a fact-check. Powers the red→green UI.</div>
+      </div>
+      <div class="workflow-agent">
+        <div class="workflow-agent-icon" style="background: rgba(255,107,138,0.15);">✏️</div>
+        <div class="workflow-agent-name">Correction Agent (Conditional)</div>
+        <div class="workflow-agent-desc">Only runs when a human edits a field. Tapping a value is the override — no separate button. A memo field appears inline for optional context. The Accept button becomes "Override &amp; Accept." The agent reads the full context: what the suggestion was, what the human changed, any memo provided, and the document state. Generates a rich learning object — pattern, scope, resolution logic — and embeds it into Vectorize. Every edit makes the system smarter.</div>
       </div>
       <div class="workflow-agent">
         <div class="workflow-agent-icon" style="background: rgba(212,120,42,0.15);">✅</div>
@@ -1532,7 +1540,7 @@
     </div>
     <div class="principle-card">
       <div class="p-title">Built-in Workflows</div>
-      <div class="p-desc">Mastra's typed workflow system handles the Extract → Reconcile → Suggest → TRID → Report → Notify pipeline with branching, error recovery, and human-in-the-loop approval.</div>
+      <div class="p-desc">Mastra's typed workflow system handles the Extract → Reconcile → Suggest → Correct → TRID → Report → Notify pipeline with branching, error recovery, and human-in-the-loop approval.</div>
     </div>
     <div class="principle-card">
       <div class="p-title">79+ LLM Providers</div>
@@ -1547,8 +1555,8 @@
       <div class="p-desc">S3-compatible storage with no egress fees. Serving PDFs to both parties constantly? Free. At scale, this saves thousands vs. AWS S3.</div>
     </div>
     <div class="principle-card">
-      <div class="p-title">KV = Smart Fee Cache</div>
-      <div class="p-desc">Fee description mappings cached in KV. "Title Search" = "Title Examination" learned once, applied globally. Cuts LLM calls by 60-70% over time.</div>
+      <div class="p-title">Vectorize = Learning Loop</div>
+      <div class="p-desc">Every human correction gets embedded and stored. Suggestion Agent searches for similar prior corrections before proposing fixes. The system gets smarter with every file — corrections compound, confidence escalates, human review decreases over time.</div>
     </div>
   </div>
 </section>
@@ -1558,7 +1566,7 @@
 <section class="section">
   <div class="section-label">05 — Scale Considerations</div>
   <h2 class="section-title">What Volume Are We Designing For?</h2>
-  <p class="section-desc">The Cloudflare architecture scales naturally — Workers auto-scale, Queues absorb bursts, KV caching reduces cost over time. But target volume shapes decisions around database strategy, LLM spend, and compliance timelines. This is an open question for the client.</p>
+  <p class="section-desc">The Cloudflare architecture scales naturally — Workers auto-scale, Queues absorb bursts, Vectorize correction memory reduces LLM calls over time. But target volume shapes decisions around database strategy, LLM spend, and compliance timelines. This is an open question for the client.</p>
 
   <div class="principles-grid" style="margin-top: 32px;">
     <div class="principle-card">
@@ -1575,7 +1583,7 @@
     </div>
     <div class="principle-card">
       <div class="p-title">Smart LLM Caching</div>
-      <div class="p-desc">KV cache learns fee mappings over time. Seen "Title Search" = "Title Examination" before? Skip the LLM. The system gets cheaper as it scales — estimated 60-70% reduction in LLM calls.</div>
+      <div class="p-desc">Vectorize learns correction patterns over time. Seen "Title Search" = "Title Examination" before? Skip the LLM. High-confidence patterns auto-resolve. The system gets cheaper as it scales.</div>
     </div>
   </div>
 </section>
@@ -1599,7 +1607,7 @@
       <div class="phase-tasks">
         <div class="task-card">
           <div class="task-title">Mastra Agent Pipeline</div>
-          <div class="task-detail">Extract → Auto-reconcile → Suggest fixes → TRID → Report → Notify. Clean files go straight through with no human touch. Low-confidence extractions or mismatches trigger the human review gate. Every mismatch gets an AI-generated fix proposal.</div>
+          <div class="task-detail">Extract → Reconcile → Suggest → Correct? → TRID → Report → Notify. Every suggestion comes with a plain-English reason. Tap Accept to confirm, or tap any field to edit — the act of editing is the override. Edits feed the Correction Agent which embeds learnings into Vectorize for future files.</div>
         </div>
         <div class="task-card">
           <div class="task-title">PDF Extraction</div>
@@ -1615,7 +1623,7 @@
         </div>
         <div class="task-card">
           <div class="task-title">Infrastructure</div>
-          <div class="task-detail">R2 for encrypted PDFs. D1 for data. KV for fee cache. Queues for async. Audit logging from day one. Email notifications via Postmark.</div>
+          <div class="task-detail">R2 for encrypted PDFs. D1 for data + correction records. Vectorize for semantic correction memory. Queues for async. Audit logging from day one. Email notifications via Postmark.</div>
         </div>
         <div class="task-card">
           <div class="task-title">Notification Flow</div>
@@ -1640,8 +1648,8 @@
           <div class="task-detail">Both sides approve → file locks → auto-generate balanced PDF → email "Ready to Schedule." Every action versioned with full audit log.</div>
         </div>
         <div class="task-card">
-          <div class="task-title">AI Suggestion UX</div>
-          <div class="task-detail">One-click accept/reject per suggestion. Batch "Accept All" for clean files. Suggestion history and accuracy tracking. Feedback loop improves future suggestions via KV cache.</div>
+          <div class="task-title">Confidence Escalation</div>
+          <div class="task-detail">Auto-resolve kicks in for high-confidence, high-consistency patterns. Conflicting correction detection — if two humans resolve the same pattern differently, flag it instead of learning the wrong thing. Accept-rate tracking per user to detect rubber-stamping. Spot checks on auto-resolved items.</div>
         </div>
         <div class="task-card">
           <div class="task-title">Property Image Pipeline</div>
@@ -1697,7 +1705,7 @@
         </div>
         <div class="task-card">
           <div class="task-title">Scale + Enterprise</div>
-          <div class="task-detail">D1 → external Postgres if needed. Tiered LLM strategy. SOC2 Type II. Advanced KV caching. White-label API for enterprise partners.</div>
+          <div class="task-detail">D1 → external Postgres if needed. Tiered LLM strategy. SOC2 Type II. Vectorize index optimization. White-label API for enterprise partners.</div>
         </div>
       </div>
     </div>
@@ -1742,7 +1750,7 @@
       <tr><td>CF Workers + Pages</td><td>API, frontend, agent execution</td><td>$5–50</td></tr>
       <tr><td>CF R2</td><td>Encrypted PDF storage (zero egress)</td><td>$5–30</td></tr>
       <tr><td>CF D1</td><td>Primary database (SQLite)</td><td>$5–25</td></tr>
-      <tr><td>CF KV</td><td>Fee description cache</td><td>$5–10</td></tr>
+      <tr><td>CF Vectorize</td><td>Semantic correction memory</td><td>$5–20</td></tr>
       <tr><td>CF Queues + Durable Objects</td><td>Async jobs + real-time state</td><td>$10–50</td></tr>
       <tr><td>Claude API (Anthropic)</td><td>Extraction, normalization, fuzzy matching</td><td>$200–600</td></tr>
       <tr><td>Postmark</td><td>Transactional email</td><td>$10–25</td></tr>
@@ -1761,7 +1769,7 @@
     </div>
     <div class="principle-card">
       <div class="p-title">Cost Curves Down</div>
-      <div class="p-desc">KV cache reduces LLM calls 60-70% over time. The more closings processed, the cheaper per-closing becomes. Inverse scaling economics.</div>
+      <div class="p-desc">Vectorize correction memory reduces LLM calls as patterns accumulate. High-confidence patterns auto-resolve without touching Claude. The more closings processed, the cheaper per-closing becomes.</div>
     </div>
   </div>
 </section>
